@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>Mapa do Brasil</title>
+      <script src="https://d3js.org/d3.v3.min.js"></script>
+      <script src="https://d3js.org/d3-queue.v2.min.js"></script>
+      <script src="https://d3js.org/topojson.v1.min.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+      <script src="https://d3js.org/topojson.v2.min.js"></script>
+   </head>
+   <style>
+      /*.state {
+      fill: red;
+      fill-opacity: 0.1;
+      }
+      .state:hover{
+		   fill-opacity:0.5;
+	   }*/
+      .state_contour {
+      fill: none;
+      stroke: black;
+      stroke-linejoin: round;
+      }
+   </style>
+   <body>
+      <div id="tooltip"></div>
+   </body>
+   <script>
+   
+      var unemployment = d3.map();
+      var color = d3.scaleThreshold()
+         .domain(d3.range(2, 20))
+         .range(d3.schemeBlues[9]);
+      /*global d3*/
+      
+      //Seleciona o body
+      const bodyElementy = d3.select("body")
+      
+      //adiciona o svg ao DOM selecionado
+      let svgElementy = bodyElementy.append("svg")
+          .attr("width", 500)
+          .attr("height", 500);
+          
+      //Marca a projecao utilizada    
+      let projection = d3.geo.mercator()
+          .scale(650)
+          .center([-52, -15])
+          .translate([500 / 2, 500 / 2]);
+          
+      //ler o json
+      /*global d3_queue*/
+      d3_queue.queue()
+          .defer(d3.json, "./br-states.json")
+          .defer(d3.csv, "./states_2008.csv", function(d) { unemployment.set(d.id, +d.rate/80); })
+          .await(ready);
+      var path = d3.geo.path()
+          .projection(projection);
+          
+      //desenhando o mapa
+      /*global topojson*/
+      function ready(error, brstates, estados){
+          if(error){
+              console.log(error)
+          }
+          let states = topojson.feature(brstates, brstates.objects.estados);
+          let states_contour = topojson.mesh(brstates, brstates.objects.estados);
+          
+          console.log(estados)
+          
+          // Desenhando estados
+      svgElementy.selectAll(".estado")
+          .data(states.features)
+          .enter()
+          .append("path")
+          .attr("class", "state")
+          .attr("d", path)
+          .attr("fill", function(d) { return color(d.rate = unemployment.get(d.id)); })
+          .attr("id", estados.estados);
+      svgElementy.append("path")
+          .datum(states_contour)
+          .attr("d", path)
+          .attr("class", "state_contour");
+      }
+          
+   </script>
+</html>
