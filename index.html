@@ -3,6 +3,7 @@
    <head>
       <meta charset="utf-8">
       <title>Mapa do Brasil</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://d3js.org/d3.v3.min.js"></script>
       <script src="https://d3js.org/d3-queue.v2.min.js"></script>
       <script src="https://d3js.org/topojson.v1.min.js"></script>
@@ -12,13 +13,13 @@
       <script src="./js/papaparse.min.js"></script>
       <script src="./js/csvparse.js"></script>
       <link rel="stylesheet" href="./css/index.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="./js/check.js"></script>
+      <script src="./js/map.js"></script>
    </head>
    <body>
       <div id="tooltip"></div>
       <form id="main">
       </form>
-      <script src="./js/map.js"></script>
       <script>
          let csvdata;
          $.get("taxadedengue.csv", function(data){
@@ -38,7 +39,7 @@
                      if(i != "id"){
                         $("#main")
                         .append(
-                          "<div><label for=\""+i+"\">"+i+"</label><input type=\"checkbox\" class=\"valores\" id=\""+i+"\" value=\""+i+"\"></div>"
+                          "<div><label for=\""+i+"\">"+i+"</label><input type=\"checkbox\" class=\"valores\" id=\""+i+"\" value=\""+i+"\" name=\"estados\"></div>"
                           //"<input type=\"checkbox\" class=\"oi\">"
                      )
                      }
