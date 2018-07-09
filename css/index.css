@@ -1,0 +1,21 @@
+state {
+    fill: red;
+    fill-opacity: 0.1;
+    
+}
+.state:hover{
+    fill-opacity:0.5;
+}
+.state_contour {
+    fill: none;
+    stroke: black;
+    stroke-linejoin: round;
+}
+svg{
+    border-style:solid;
+}
+#main{
+    width: 800px;
+    /*display: flex;*/
+    max-width: 360px;
+}
