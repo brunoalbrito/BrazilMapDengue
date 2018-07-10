@@ -61,11 +61,15 @@ $(() => {
                     .attr("fill", function(d) {
                         return color(d[year] = unemployment.get(d.id));
                     })
-                    .attr("id", estados.estados);
+                    .attr("id", estados.estados)
+                    .append("title").text(function(d) { return d[year] + "%"; });
+                    
+                    
                 svgElementy.append("path")
                     .datum(states_contour)
                     .attr("d", path)
                     .attr("class", "state_contour");
+                    
             }
         } else {
             $("svg").empty();
