@@ -62,7 +62,7 @@ $(() => {
                         return color(d[year] = unemployment.get(d.id));
                     })
                     .attr("id", estados.estados)
-                    .append("title").text(function(d) { return d[year] + "%"; });
+                    .append("title").text(function(d) { return d[year]; });
                     
                     
                 svgElementy.append("path")
